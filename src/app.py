@@ -62,6 +62,10 @@ def signup_for_activity(activity_name: str, email: str):
     # Get the specificy activity
     activity = activities[activity_name]
 
+    # Validar se o estudante já está inscrito
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Already signed up")
     # Add student
     activity["participants"].append(email)
-    return {"message": f"{email} inscrito(a) em {activity_name} com sucesso"}
+
+    return {"message": "Inscrição realizada com sucesso"}
