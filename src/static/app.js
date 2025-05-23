@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       activitiesList.innerHTML = "";
 
       // Populate activities list
+      activitySelect.innerHTML = '<option value="">-- Selecione uma atividade --</option>';
       Object.entries(activities).forEach(([name, details]) => {
         const activityCard = document.createElement("div");
         activityCard.className = "activity-card";
@@ -27,7 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="participants-section">
               <strong>Participantes inscritos:</strong>
               <ul class="participants-list">
-                ${details.participants.map(email => `<li>${email}</li>`).join("")}
+                ${details.participants
+                  .map(
+                    email => `
+                      <li>
+                        ${email}
+                        <button class="remove-btn" data-activity="${name}" data-email="${email}" title="Remover inscrição">❌</button>
+                      </li>
+                    `
+                  )
+                  .join("")}
               </ul>
             </div>
           `;
@@ -104,4 +114,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize app
   fetchActivities();
+
+  // Adicione o event listener para os botões de remover
+  activitiesList.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("remove-btn")) {
+      const activity = event.target.getAttribute("data-activity");
+      const email = event.target.getAttribute("data-email");
+      if (confirm(`Deseja remover ${email} da atividade "${activity}"?`)) {
+        try {
+          const response = await fetch(
+            `/activities/${encodeURIComponent(activity)}/remove?email=${encodeURIComponent(email)}`,
+            { method: "POST" }
+          );
+          const result = await response.json();
+          if (response.ok) {
+            messageDiv.textContent = result.message;
+            messageDiv.className = "success";
+            fetchActivities(); // Atualiza a lista após remoção
+          } else {
+            messageDiv.textContent = result.detail || "Erro ao remover inscrição";
+            messageDiv.className = "error";
+          }
+          messageDiv.classList.remove("hidden");
+          setTimeout(() => {
+            messageDiv.classList.add("hidden");
+          }, 5000);
+        } catch (error) {
+          messageDiv.textContent = "Falha ao remover inscrição.";
+          messageDiv.className = "error";
+          messageDiv.classList.remove("hidden");
+        }
+      }
+    }
+  });
 });

@@ -170,3 +170,22 @@ footer {
   padding: 20px;
   color: #666;
 }
+
+.remove-btn {
+  background: transparent;
+  color: #c62828;
+  border: none;
+  font-size: 1.1em;
+  padding: 0 6px;
+  margin-left: 6px;
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 1;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.remove-btn:hover {
+  background: #ffeaea;
+  color: #b71c1c;
+}

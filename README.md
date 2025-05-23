@@ -42,6 +42,30 @@ Se o exercício não estiver pronto em 20 segundos, verifique a aba [Actions](..
 
 </details>
 
+## Como rodar os testes
+
+1. Instale as dependências do backend (FastAPI, pytest, httpx):
+
+```bash
+pip install fastapi pytest httpx
+```
+
+2. Execute os testes:
+
+```bash
+pytest src/test_app.py
+```
+
+## Documentação da API
+
+A API possui os seguintes endpoints principais:
+
+- `GET /activities`: Lista todas as atividades e seus detalhes.
+- `POST /activities/{activity_name}/signup?email=EMAIL`: Inscreve um participante na atividade.
+- `POST /activities/{activity_name}/remove?email=EMAIL`: Remove um participante da atividade.
+
+Veja o código-fonte para mais detalhes e exemplos de uso.
+
 ---
 
 &copy; 2025 GitHub &bull; [Código de Conduta](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [Licença MIT](https://gh.io/mit)
